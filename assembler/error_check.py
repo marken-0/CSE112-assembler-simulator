@@ -90,3 +90,43 @@ def isVarValid(var_declared,var_called,alphanum,inst):
             return (-3,i)
             
     return (0,0)
+
+def isLabelValid(lbl_called,lbl_declared,lbl_inst,inst,alphanum,lbl_declared2,var_declared2):
+
+    numarr = ['0','1','2','3','4','5','6','7','8','9']
+    inst2 = inst.copy()
+    inst2.append('var')
+    l1 = len(lbl_declared)
+    l2 = len(lbl_inst)
+    if l1!=l2:
+        return (-5,0)
+    count2 = 0
+    for i in lbl_declared:
+        a = i[0]
+        b = len(a)
+        count = 0
+        count4 = 0
+        for j in a:
+            if j in alphanum:
+                count+=1
+            if j in numarr:
+                count4+=1
+        if count!=b:
+            return (-1,i[1])
+        if b==count4:
+            return (-6,i[1])
+        else:
+            c = lbl_inst[count2]
+            if isLineValid2(c)!=0 or lineTypesMatch(c,lbl_declared2,var_declared2)!=0:
+                return (-2,i[1])
+        count2+=1
+    lbl2 = []
+    for i in lbl_declared:
+        lbl2.append(i[0])
+    for i in lbl_called:
+        if i not in lbl2:
+            return (-3,i)     
+    for i in lbl2:
+        if i in inst2:
+            return (-4,i)
+    return (0,0)
