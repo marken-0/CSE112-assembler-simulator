@@ -113,5 +113,28 @@ if varCheck[0] in error_messages:
     
     errors.append(error_messages[varCheck[0]].format(index + 1))
     VALID = False
+    
+################################################
+
+error_messages2 = {
+        -1: 'ERROR in line {0}: Invalid label name',
+        -2: 'ERROR in line {0}: Invalid label instruction',
+        -3: 'ERROR in line {0}: Invalid label called',
+        -4: 'ERROR in line {0}: Label name is the same as an instruction name',
+        -5: 'ERROR in line {0}: Label instruction not given',
+        -6: 'ERROR in line {0}: Invalid label name (only numeric or empty)'
+    }
+
+validlbl = isLabelValid(calledLabels_idx,declaredLabels_idx,lblInstruction,instructions_registers,alphanum,declaredLabels,declaredVars2)
+
+if validlbl[0] in error_messages2:
+    index = 0
+    if validlbl[0] == -3:
+        index = next((i for i, (lbl, _) in enumerate(calledLabels2) if lbl == validlbl[1]), None)
+    elif validlbl[0] == -4:
+        index = next((i for i, lbl in enumerate(declaredLabels_idx) if lbl == validlbl[1]), None)
+
+    errors.append(error_messages2[validlbl[0]].format(index + 1))
+    VALID = False
 
 
