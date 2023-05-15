@@ -89,7 +89,7 @@ def isVarValid(var_declared,var_called,alphanum,inst):
         if i not in var2:
             return (-3,i)
             
-    return (0,0)
+    return (0,0)
 
 def isLabelValid(lbl_called,lbl_declared,lbl_inst,inst,alphanum,lbl_declared2,var_declared2):
 
