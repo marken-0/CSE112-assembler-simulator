@@ -219,3 +219,51 @@ if HLT_COUNT == 1:
         if label not in calledLabels_idx:
             errors.append('ERROR: hlt is not the last instruction, given label not called')
             VALID = False
+
+################################################
+output = []
+if len(errors) == 0:
+    len_without_vars_and_labels = sum(1 for inst in ls_inputs if not inst.strip().startswith('var'))
+
+    ls_vars = [[i, inst.split()[-1]] for i, inst in enumerate(ls_inputs) if 'var' in inst]
+    ls_labels = [[i, inst.split(':')[0]] for i, inst in enumerate(ls_inputs) if ':' in inst]
+
+    no_of_vars = len(ls_vars)
+
+    for inst in ls_inputs:
+        inst_comps = inst.strip().split()
+
+        if inst_comps[0] == 'var':
+            continue
+
+        if inst_comps[0][-1] == ":":
+            inst_comps = inst_comps[1:]
+
+        temp = "movi" if inst_comps[0] == "mov" and "$" in inst_comps[-1] else inst_comps[0]
+        inst_type = opcodeTable[temp][-1]
+        output_string = opcodeTable[temp][0] + '0' * type_to_unusedbits[inst_type]
+
+        for comp in inst_comps[1:1+type_to_reg_no[inst_type]]:
+            output_string += register_to_encoding[comp]
+
+        if inst_type == 'B':
+            imm = int(inst_comps[-1][1:])
+            output_string += bin(imm)[2:].zfill(7)
+
+        if inst_type == 'D':
+            location = len_without_vars_and_labels + sum(i[0] for i in ls_vars if i[-1] == inst_comps[-1])
+            output_string += bin(location)[2:].zfill(7)
+
+        if inst_type == 'E':
+            location = sum(i[0] - no_of_vars for i in ls_labels if i[-1] == inst_comps[1])
+            output_string += bin(location)[2:].zfill(7)
+        
+        output.append(output_string)
+
+
+else:
+    output.append(errors[0])
+
+outputFile = 'output.txt'
+with open(outputFile, 'w') as f:
+    f.write('\n'.join(output))
