@@ -53,3 +53,40 @@ def isLineValid2(line_comp):
     if not isSizeRight(line_comp[0], line_comp):
         return -2
     return 0
+
+def isVarValid(var_declared,var_called,alphanum,inst):
+    """Checks if Variables are Valid"""
+    numarr = ['0','1','2','3','4','5','6','7','8','9']
+    inst2 = inst.copy()
+    inst2.append('var')
+    len1 = len(var_declared)
+    for i in var_declared:
+        if i[1]!=1:
+            return (-1,i[1])
+        if i[1]==1:
+            a = i[0]
+            b = len(a)
+            count = 0
+            count2 = 0
+            for j in a:
+                if j in alphanum:
+                    count+=1
+                if j in numarr:
+                    count2+=1
+            if count!=b:
+                return (-2,i[0])
+            if b==count2:
+                return (-5,i[0])
+    b2 = len(var_called)
+    var2 = []
+    for i in var_declared:
+        var2.append(i[0])
+    for i in var2:
+        if i in inst2:
+            return (-4,i)
+    
+    for i in var_called:
+        if i not in var2:
+            return (-3,i)
+            
+    return (0,0)
