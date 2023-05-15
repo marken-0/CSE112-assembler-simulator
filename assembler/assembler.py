@@ -137,4 +137,22 @@ if validlbl[0] in error_messages2:
     errors.append(error_messages2[validlbl[0]].format(index + 1))
     VALID = False
 
+################################################
+
+duplicationCheck = Duplication(declaredLabels_idx,declaredVars,declaredLabels,declaredVars2)
+
+if duplicationCheck[0] == -1:
+    index = declaredVars2.index(duplicationCheck[1])
+    errors.append(f'ERROR in line {index + 1}: Label name is the same as a variable')
+    VALID = False
+
+if duplicationCheck[0] == -2:
+    index = declaredLabels_idx[0].index(duplicationCheck[1])
+    errors.append(f'ERROR in line {index + 1}: A label was declared more than once')
+    VALID = False
+
+if duplicationCheck[0] == -3:
+    errors.append(f'ERROR in line {duplicationCheck[1] + 1}: A variable was declared more than once')
+    VALID = False
+
 
