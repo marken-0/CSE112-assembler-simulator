@@ -156,3 +156,66 @@ if duplicationCheck[0] == -3:
     VALID = False
 
 
+###############################################
+HLT_COUNT = 0
+
+error_messages3 = {
+    -1: 'No Such Instruction Found',
+    -2: 'Wrong Syntax used, incorrect number of arguments',
+    -3: 'Invalid Register (No such Register Found)',
+    -4: 'Illegal Immediate Value used',
+    -5: 'Invalid use of FLAGS register',
+    -6: 'Invalid use of label',
+    -7: 'Invalid use of variable',
+    -8: 'Invalid use of label'
+}
+
+for i, line in enumerate(ls_inputs):
+    line = line.strip()
+    tokens = list(map(str, line.split()))
+    opcode = tokens[0]
+
+    if opcode.endswith(':'):
+        if tokens[-1] == 'hlt':
+            HLT_COUNT += 1
+        continue
+
+    if opcode == 'var':
+        continue
+
+    line_valid = isLineValid(tokens)
+    if line_valid == -1 or line_valid == -2:
+        errors.append(f'ERROR in line {i+1}: {error_messages[line_valid]}')
+        VALID = False
+        break
+
+    line_match = lineTypesMatch(tokens, declaredLabels, declaredVars2)
+    if line_match in [-1, -2, -3, -4, -5, -6, -7, -8]:
+        errors.append(f'ERROR in line {i+1}: {error_messages3[line_match]}')
+        VALID = False
+        break
+
+    if 'hlt' in tokens:
+        HLT_COUNT += 1
+
+
+if HLT_COUNT == 0:
+    errors.append('ERROR: hlt not present')
+    VALID = False
+
+if HLT_COUNT > 1:
+    errors.append('ERROR: multiple hlt present')
+    VALID = False
+
+if HLT_COUNT == 1:
+    last_line = ls_inputs[-1].strip()
+    last_line_comp = list(map(str, last_line.split()))
+
+    if last_line_comp[-1] != 'hlt':
+        errors.append('ERROR: hlt is not the last instruction')
+        VALID = False
+    elif last_line_comp[0].endswith(':'):
+        label = last_line_comp[0][:-1]
+        if label not in calledLabels_idx:
+            errors.append('ERROR: hlt is not the last instruction, given label not called')
+            VALID = False
