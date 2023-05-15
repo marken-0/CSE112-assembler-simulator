@@ -90,3 +90,28 @@ for line in ls_inputs:
             errors.append('ERROR: more than 2 arguments in declaration of variables')
 
     tmp_idx += 1
+    
+   
+################################################
+
+error_messages = {
+    -1: 'ERROR in line {0}: Illegal declaration of variables',
+    -2: 'ERROR in line {0}: Variable name incorrect',
+    -3: 'ERROR in line {0}: Variable called was never declared',
+    -4: 'ERROR in line {0}: Variable has the same name as an ISA instruction',
+    -5: 'ERROR in line {0}: Variable name incorrect'
+}
+
+varCheck = isVarValid(declaredVars, calledVars, alphanum, instructions_registers)
+
+if varCheck[0] in error_messages:
+    index = 0
+    if varCheck[0] == -2 or varCheck[0] == -4 or varCheck[0] == -5:
+        index = next((i for i, var in enumerate(declaredVars2) if var == varCheck[1]), 0)
+    elif varCheck[0] == -3:
+        index = next((var[1] for var in calledVars2 if var[0] == varCheck[1]), 0)
+    
+    errors.append(error_messages[varCheck[0]].format(index + 1))
+    VALID = False
+
+
