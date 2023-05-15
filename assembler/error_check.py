@@ -130,3 +130,46 @@ def isLabelValid(lbl_called,lbl_declared,lbl_inst,inst,alphanum,lbl_declared2,va
         if i in inst2:
             return (-4,i)
     return (0,0)
+def lineTypesMatch(line_comp,lbl_declared2,var_declared2):
+    if line_comp[0]=="mov":
+        tmp = "movi" if "$" in line_comp[-1] else "movr"
+    else:
+        tmp = line_comp[0]
+
+    ls_type_order = type_to_members[opcodeTable[tmp][-1]]
+    for i, val in enumerate(line_comp[1:], start=1):
+        if ls_type_order[i] == 'Register':
+            if isRegisterValid(val) == -1:
+                if line_comp[0] != "movr":
+                    return -4
+            elif isRegisterValid(val) is False:
+                return -1
+        elif ls_type_order[i] == 'Immediate' and not isImmediateValid(val):
+            return -2
+        elif ls_type_order[i] == 'Immediate' and not isImmediateRangeValid(val):
+            return -3
+
+    if ls_type_order[-1] == 'Memory Address':
+        if line_comp[0] in ('ld', 'st') and line_comp[-1] not in var_declared2:
+            return (-6 if line_comp[-1] not in lbl_declared2 else -5)
+        elif line_comp[0] in ('jmp', 'jlt', 'jgt', 'je') and line_comp[-1] not in lbl_declared2:
+            return (-8 if line_comp[-1] in var_declared2 else -7)
+    return 0
+def Duplication(lbl_declared,var_declared,lbl_declared2,var_declared2):
+    """Checks if there are any Duplicate Labels or Variables"""
+    a = len(lbl_declared)
+    b = len(var_declared)
+    for i in var_declared2:
+        if i in lbl_declared2:
+            return (-1,i)
+    for i in range(0,a):
+        a2 = lbl_declared[i][0]
+        for j in range(i+1,a):
+            if a2==lbl_declared[j][0]:
+                return (-2,a2)
+    for i in range(0,b):
+        b2 = var_declared[i][0]
+        for j in range(i+1,b):
+            if b2==var_declared[j][0]:
+                return (-3,var_declared[j][1])
+    return (0,0)
