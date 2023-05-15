@@ -54,4 +54,20 @@ for tmp_idx, line in enumerate(ls_inputs):
         calledLabels_idx.append(tokens[-1])
         calledLabels2.append([tokens[-1], tmp_idx])
 
+################################################
 
+errors = []
+for i, line in enumerate(ls_inputs):
+    tokens = line.strip().split()
+    
+    # if tokens[0] == 'movi' or tokens[0] == 'movr':
+    #     errors.append(f'ERROR: No Such Instruction Found as {tokens[0]} for instruction {i+1}')
+    if tokens[0] == 'mov':
+        if len(tokens) < 2:
+            errors.append(f'ERROR at line number {i+1}: invalid arguments for mov')
+            break
+        if tokens[1] == 'FLAGS':
+            errors.append(f'ERROR at line number {i+1}: flags cannot be used as a source register')
+        tokens[0] = 'movi' if tokens[-1][0] == '$' else 'movr'
+    
+    ls_inputs[i] = ' '.join(tokens)
