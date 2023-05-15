@@ -71,3 +71,22 @@ for i, line in enumerate(ls_inputs):
         tokens[0] = 'movi' if tokens[-1][0] == '$' else 'movr'
     
     ls_inputs[i] = ' '.join(tokens)
+
+declaredVars = []
+declaredVars2 = []
+
+
+tmp_idx = 1
+for line in ls_inputs:
+    tokens = line.strip().split()
+
+    if tokens[0] == "var":
+        if len(tokens) == 2:
+            var_name = tokens[1]
+            declaredVars.append((var_name, tmp_idx))
+            declaredVars2.append(var_name)
+            tmp_idx -= 1
+        else:
+            errors.append('ERROR: more than 2 arguments in declaration of variables')
+
+    tmp_idx += 1
