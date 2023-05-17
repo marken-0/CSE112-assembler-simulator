@@ -1,15 +1,24 @@
 from ISA import *
 from error_check import *
+import sys
 ################################################
 
 ls_inputs = []
-inputFile = 'input.txt'
-with open(inputFile, "r") as file:
-    for line in file:
-        input_line = line.strip()
-        if input_line == '':
-            continue
-        ls_inputs.append(input_line)
+# inputFile = 'input.txt'
+# with open(inputFile, "r") as file:
+#     for line in file:
+#         input_line = line.strip()
+#         if input_line == '':
+#             continue
+#         ls_inputs.append(input_line)
+
+
+for line in sys.stdin:
+    input_line = line.strip()
+    if input_line == '':
+        continue
+    ls_inputs.append(input_line)
+
 
 ################################################
 
@@ -264,6 +273,11 @@ if len(errors) == 0:
 else:
     output.append(errors[0])
 
-outputFile = 'output.txt'
-with open(outputFile, 'w') as f:
-    f.write('\n'.join(output))
+# outputFile = 'output.txt'
+# with open(outputFile, 'w') as f:
+#     f.write('\n'.join(output))
+
+print('\n'.join(output))
+
+
+
