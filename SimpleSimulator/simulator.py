@@ -29,3 +29,17 @@ def exe_inst(inst):
             r1 = inst[6:9]
             mem = inst[9:]
             func(r1, mem)
+
+for line in sys.stdin:
+    input_line = line.strip()
+    if input_line == '':
+        continue
+    input_list.append(input_line)
+
+while input_list[PC] != '1101000000000000':
+    opcode = input_list[PC][:5]
+    print(to_bin(PC, 7), end = '        ')
+    if (opcode not in type_to_opcode["E"] and opcode not in type_to_opcode["F"]):
+        exe_inst(input_list[PC])
+        reg_values()
+        PC += 1            
