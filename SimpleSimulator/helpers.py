@@ -179,3 +179,19 @@ def movf_10010(rd, imm):
     REG[rd] = to_bin(imm, 16)
     REG['111'] = to_bin(0, 16)
 
+def pow_10011(rd, rs1, rs2):
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    REG[rd] = to_bin(x ** y, 16)
+    if len(REG[rd]) > 16:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else: REG['111'] = to_bin(0, 16)
+
+def sqrt_10100(rd, rs1):
+    x = to_dec(REG[rs1])
+    REG[rd] = to_bin(x ** 0.5, 16)
+    if (x**0.5) < 1:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else: REG['111'] = to_bin(0, 16)
