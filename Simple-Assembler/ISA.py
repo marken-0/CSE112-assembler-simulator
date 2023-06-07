@@ -9,9 +9,9 @@
 # MAX_LINE_LENGTH = 100
 # err = 0
 
-instructions = ["add", "addf", "subf", "sub", "movi", "movr", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
-instructions_original = ["add", "addf", "subf", "sub", "mov", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
-instructions_registers = ["add", "addf", "subf", "sub", "mov", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt", "R0", "R1", "R2", "R3", "R4", "R5", "R6", "FLAGS"]
+instructions = ["pow","sqrt", "addi", "subi", "add", "addf", "subf", "sub", "movi", "movr", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
+instructions_original = ["pow","sqrt", "addi", "subi", "add", "addf", "subf", "sub", "mov", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
+instructions_registers = ["pow","sqrt", "addi", "subi", "add", "addf", "subf", "sub", "mov", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt", "R0", "R1", "R2", "R3", "R4", "R5", "R6", "FLAGS"]
 register_list = ["R0", "R1", "R2", "R3", "R4", "R5", "R6", "FLAGS"]
 numarr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 alphanum = ['_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -40,6 +40,10 @@ opcodeTable = {
     'addf': ['10000', 'A'],
     'subf': ['10001', 'A'],
     'movf': ['10010', 'Bf'],
+    'sqrt': ['10100', 'C'],
+    'pow': ['10011', 'A'],
+    'addi': ['10101', 'B'],
+    'subi': ['10110', 'B']
 }
 type_to_reg_no = {
     'A': 3,
