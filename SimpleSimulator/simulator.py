@@ -56,3 +56,18 @@ while input_list[PC] != '1101000000000000':
         reg_values()
 
     print()     
+
+    
+REG["111"] = to_bin(0, 16)
+print(to_bin(PC, 7), end = '        ')
+reg_values()
+print()
+
+for i in range (0,128):
+    if(i < len(input_list)):
+        print(input_list[i])
+    else:
+        if(to_bin(i, 7) in MEM.keys()):
+            print(MEM[to_bin(i, 7)])
+        else:
+            print("0000000000000000")
