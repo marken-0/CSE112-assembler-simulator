@@ -9,9 +9,9 @@
 # MAX_LINE_LENGTH = 100
 # err = 0
 
-instructions = ["add", "sub", "movi", "movr", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
-instructions_original = ["add", "sub", "mov", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
-instructions_registers = ["add", "sub", "mov", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt", "R0", "R1", "R2", "R3", "R4", "R5", "R6", "FLAGS"]
+instructions = ["add", "addf", "subf", "sub", "movi", "movr", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
+instructions_original = ["add", "addf", "subf", "sub", "mov", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt"]
+instructions_registers = ["add", "addf", "subf", "sub", "mov", "movf", "ld", "st", "mul", "div", "rs", "ls", "xor", "or", "and", "not", "cmp", "jmp", "jlt", "jgt", "je", "hlt", "R0", "R1", "R2", "R3", "R4", "R5", "R6", "FLAGS"]
 register_list = ["R0", "R1", "R2", "R3", "R4", "R5", "R6", "FLAGS"]
 numarr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 alphanum = ['_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -36,11 +36,15 @@ opcodeTable = {
     'jlt': ['11100', 'E'],
     'jgt': ['11101', 'E'],
     'je': ['11111', 'E'],
-    'hlt': ['11010', 'F']
+    'hlt': ['11010', 'F'],
+    'addf': ['10000', 'A'],
+    'subf': ['10001', 'A'],
+    'movf': ['10010', 'Bf'],
 }
 type_to_reg_no = {
     'A': 3,
     'B': 1,
+    'Bf': 1,
     'C': 2,
     'D': 1,
     'E': 0,
@@ -50,6 +54,7 @@ type_to_reg_no = {
 type_to_input_len = {
     'A': 4,
     'B': 3,
+    'Bf': 3,
     'C': 3,
     'D': 3,
     'E': 2,
@@ -59,6 +64,7 @@ type_to_input_len = {
 type_to_imm_no = {
     'A': 0,
     'B': 1,
+    'Bf': 1,
     'C': 0,
     'D': 0,
     'E': 0,
@@ -68,6 +74,7 @@ type_to_imm_no = {
 type_to_unusedbits = {
     'A': 2,
     'B': 1,
+    'Bf': 0,
     'C': 5,
     'D': 1,
     'E': 4,
@@ -77,6 +84,7 @@ type_to_unusedbits = {
 type_to_memoryaddress = {
     'A': 0,
     'B': 0,
+    'Bf': 0,
     'C': 0,
     'D': 1,
     'E': 1,
@@ -97,6 +105,7 @@ register_to_encoding = {
 type_to_members = {
     "A": ["Instruction", "Register", "Register", "Register"],
     "B": ["Instruction", "Register", "Immediate"],
+    "Bf": ["Instruction", "Register", "Immediatef"],
     "C": ["Instruction", "Register", "Register"],
     "D": ["Instruction", "Register", "Memory Address"],
     "E": ["Instruction", "Memory Address"],

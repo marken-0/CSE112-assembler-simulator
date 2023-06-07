@@ -2,6 +2,32 @@ from ISA import *
 from error_check import *
 import sys
 ################################################
+def float_to_bin(num):
+    exponent_bits = 3
+    mantissa_bits = 5
+
+    if num == 0: return "0" * (exponent_bits + mantissa_bits)
+
+    exponent = 0
+    while num >= 2 or num < 1:
+        if num >= 2:
+            num /= 2
+            exponent += 1
+        else:
+            num *= 2
+            exponent -= 1
+
+    exponent += 2 ** (exponent_bits - 1) - 1
+    exponent_binary = format(exponent, f"0{exponent_bits}b")
+
+    num -= 1
+    mantissa_binary = ""
+    for _ in range(mantissa_bits):
+        num *= 2
+        mantissa_binary += str(int(num))
+        num -= int(num)
+
+    return exponent_binary + mantissa_binary
 
 ls_inputs = []
 # inputFile = 'input.txt'
@@ -104,11 +130,11 @@ for line in ls_inputs:
 ################################################
 
 error_messages = {
-    -1: 'ERROR in line {0}: Illegal declaration of variables',
-    -2: 'ERROR in line {0}: Variable name incorrect',
-    -3: 'ERROR in line {0}: Variable called was never declared',
-    -4: 'ERROR in line {0}: Variable has the same name as an ISA instruction',
-    -5: 'ERROR in line {0}: Variable name incorrect'
+    -1: 'Illegal declaration of variables',
+    -2: 'Variable name incorrect',
+    -3: 'Variable called was never declared',
+    -4: 'Variable has the same name as an ISA instruction',
+    -5: 'Variable name incorrect'
 }
 
 varCheck = isVarValid(declaredVars, calledVars, alphanum, instructions_registers)
@@ -258,6 +284,10 @@ if len(errors) == 0:
         if inst_type == 'B':
             imm = int(inst_comps[-1][1:])
             output_string += bin(imm)[2:].zfill(7)
+
+        if inst_type == 'Bf':
+            imm = float(inst_comps[-1][1:])
+            output_string += float_to_bin(imm)
 
         if inst_type == 'D':
             location = len_without_vars_and_labels + sum(i[0] for i in ls_vars if i[-1] == inst_comps[-1])
