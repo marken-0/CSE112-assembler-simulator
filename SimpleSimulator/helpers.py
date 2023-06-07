@@ -157,4 +157,20 @@ def cmp_01110(rs1, rs2):
     elif x > y: REG['111'] = to_bin(2, 16)
     elif x < y: REG['111'] = to_bin(4, 16)
 
+def addf_10000(rd, rs1, rs2):
+    x = bin_to_float(REG[rs1])
+    y = bin_to_float(REG[rs2])
+    REG[rd] = float_to_bin(x + y).zfill(16)
+    if len(REG[rd]) > 16:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else: REG['111'] = to_bin(0, 16)
 
+def subf_10001(rd, rs1, rs2):
+    x = bin_to_float(REG[rs1])
+    y = bin_to_float(REG[rs2])
+    REG[rd] = float_to_bin(x - y).zfill(16)
+    if (x - y) < 0:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else: REG['111'] = to_bin(0, 16)
