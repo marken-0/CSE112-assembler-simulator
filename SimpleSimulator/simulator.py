@@ -43,3 +43,16 @@ while input_list[PC] != '1101000000000000':
         exe_inst(input_list[PC])
         reg_values()
         PC += 1            
+    else:
+        mem = int(input_list[PC][8:], 2)
+        if opcode == "01111": PC = mem
+        elif opcode == "11100":
+            PC = mem if REG["111"] == to_bin(4, 16) else PC + 1
+        elif opcode == "11101":
+            PC = mem if REG["111"] == to_bin(2, 16) else PC + 1
+        elif opcode == "11111":
+            PC = mem if REG["111"] == to_bin(1, 16) else PC + 1
+        REG["111"] = to_bin(0, 16)
+        reg_values()
+
+    print()     
