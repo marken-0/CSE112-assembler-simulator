@@ -174,3 +174,8 @@ def subf_10001(rd, rs1, rs2):
         REG[rd] = to_bin(0, 16)
         REG['111'] = to_bin(8, 16)
     else: REG['111'] = to_bin(0, 16)
+ 
+def movf_10010(rd, imm):
+    REG[rd] = to_bin(imm, 16)
+    REG['111'] = to_bin(0, 16)
+
