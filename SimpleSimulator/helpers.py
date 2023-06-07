@@ -195,3 +195,19 @@ def sqrt_10100(rd, rs1):
         REG[rd] = to_bin(0, 16)
         REG['111'] = to_bin(8, 16)
     else: REG['111'] = to_bin(0, 16)
+
+def addi_10101(rd, imm):
+    x = to_dec(REG[rd])
+    REG[rd] = to_bin(x + imm, 16)
+    if len(REG[rd]) > 16:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    REG['111'] = to_bin(0, 16)
+
+def subi_10110(rd, imm):
+    x = to_dec(REG[rd])
+    REG[rd] = to_bin(x - imm, 16)
+    if (x - imm) < 0:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    REG['111'] = to_bin(0, 16)        
