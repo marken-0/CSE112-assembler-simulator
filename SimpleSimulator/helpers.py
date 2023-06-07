@@ -52,14 +52,14 @@ def bin_to_float(binary):
     return float_value
 
 
-def reg_values():#arnav
+def reg_values():
     for i in REG.values():
         if len(i) == 16: print(i, end = ' ')
         else:
             tmp = to_dec(i)
             print(to_bin(tmp, 16), end = ' ')
 
-def add_00000(rd, rs1, rs2):#arnav
+def add_00000(rd, rs1, rs2):
     x = to_dec(REG[rs1])
     y = to_dec(REG[rs2])
     REG[rd] = to_bin(x + y, 16)
@@ -68,7 +68,7 @@ def add_00000(rd, rs1, rs2):#arnav
         REG['111'] = to_bin(8, 16)
     else: REG['111'] = to_bin(0, 16)
 
-def sub_00001(rd, rs1, rs2):#arnav
+def sub_00001(rd, rs1, rs2):
     x = to_dec(REG[rs1])
     y = to_dec(REG[rs2])
     REG[rd] = to_bin(x - y, 16)
@@ -77,21 +77,65 @@ def sub_00001(rd, rs1, rs2):#arnav
         REG['111'] = to_bin(8, 16)
     else: REG['111'] = to_bin(0, 16)
 
-def movi_00010(rd, imm):#arnav
+def movi_00010(rd, imm):
     REG[rd] = to_bin(imm, 16)
     REG['111'] = to_bin(0, 16)
 
-def movr_00011(rd, rs1):#arnav
+def movr_00011(rd, rs1):
     REG[rd] = REG[rs1]
     REG['111'] = to_bin(0, 16)
 
-def ld_00100(rd, mem):#arnav
+def ld_00100(rd, mem):
     if mem not in MEM:
         MEM[mem] = to_bin(0, 16)
     REG[rd] = MEM[mem]
     REG['111'] = to_bin(0, 16)
 
-def st_00101(rd, mem):#arnav
+def st_00101(rd, mem):
     MEM[mem] = REG[rd]
     REG['111'] = to_bin(0, 16)
+
+def mul_00110(rd, rs1, rs2):
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    REG[rd] = to_bin(x * y, 16)
+    if len(REG[rd]) > 16:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else: REG['111'] = to_bin(0, 16)
+
+def div_00111(rd, rs1):
+    x = to_dec(REG[rd])
+    y = to_dec(REG[rs1])
+    if y == 0:
+        REG[rd] = to_bin(0, 16)
+        REG[rs1] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else:
+        REG[rd] = to_bin(x // y, 16)
+        REG[rs1] = to_bin(x % y, 16)
+        REG['111'] = to_bin(0, 16)
+
+def rs_01000(rd, imm):
+    x = to_dec(REG[rd])
+    REG[rd] = to_bin(x >> imm, 16)
+    REG['111'] = to_bin(0, 16)
+
+def ls_01001(rd, imm):
+    x = to_dec(REG[rd])
+    REG[rd] = to_bin(x << imm, 16)
+    REG['111'] = to_bin(0, 16)
+
+def xor_01010(rd, rs1, rs2):
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    REG[rd] = to_bin(x ^ y, 16)
+    REG['111'] = to_bin(0, 16)
+
+def or_01011(rd, rs1, rs2):
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    REG[rd] = to_bin(x | y, 16)
+    REG['111'] = to_bin(0, 16)
+
 
