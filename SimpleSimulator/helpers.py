@@ -137,5 +137,24 @@ def or_01011(rd, rs1, rs2):
     y = to_dec(REG[rs2])
     REG[rd] = to_bin(x | y, 16)
     REG['111'] = to_bin(0, 16)
+    
+def and_01100(rd, rs1, rs2):
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    REG[rd] = to_bin(x & y, 16)
+    REG['111'] = to_bin(0, 16)
+
+def not_01101(rd, rs1):
+    x = to_dec(REG[rs1])
+    REG[rd] = to_bin(~x, 16)
+    REG['111'] = to_bin(0, 16)
+
+def cmp_01110(rs1, rs2):
+    REG['111'] = to_bin(0, 16)
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    if x == y: REG['111'] = to_bin(1, 16)
+    elif x > y: REG['111'] = to_bin(2, 16)
+    elif x < y: REG['111'] = to_bin(4, 16)
 
 
