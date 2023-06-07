@@ -50,3 +50,48 @@ def bin_to_float(binary):
 
     float_value = mantissa * (2 ** exponent)
     return float_value
+
+
+def reg_values():#arnav
+    for i in REG.values():
+        if len(i) == 16: print(i, end = ' ')
+        else:
+            tmp = to_dec(i)
+            print(to_bin(tmp, 16), end = ' ')
+
+def add_00000(rd, rs1, rs2):#arnav
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    REG[rd] = to_bin(x + y, 16)
+    if len(REG[rd]) > 16:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else: REG['111'] = to_bin(0, 16)
+
+def sub_00001(rd, rs1, rs2):#arnav
+    x = to_dec(REG[rs1])
+    y = to_dec(REG[rs2])
+    REG[rd] = to_bin(x - y, 16)
+    if (x - y) < 0:
+        REG[rd] = to_bin(0, 16)
+        REG['111'] = to_bin(8, 16)
+    else: REG['111'] = to_bin(0, 16)
+
+def movi_00010(rd, imm):#arnav
+    REG[rd] = to_bin(imm, 16)
+    REG['111'] = to_bin(0, 16)
+
+def movr_00011(rd, rs1):#arnav
+    REG[rd] = REG[rs1]
+    REG['111'] = to_bin(0, 16)
+
+def ld_00100(rd, mem):#arnav
+    if mem not in MEM:
+        MEM[mem] = to_bin(0, 16)
+    REG[rd] = MEM[mem]
+    REG['111'] = to_bin(0, 16)
+
+def st_00101(rd, mem):#arnav
+    MEM[mem] = REG[rd]
+    REG['111'] = to_bin(0, 16)
+
